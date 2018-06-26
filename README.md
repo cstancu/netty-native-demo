@@ -37,7 +37,7 @@ For the purpose of this demo we copied the `HttpHelloWorldServer` example from t
 
 The example is built with Maven. But before we build we need to install `svm.jar` in the local Maven repository since the projects `pom.xml` file depends on it. The `svm.jar` library contains all the code needed to compile the substitutions required for Netty.
 ```
-$ mvn install:install-file -Dfile=${JAVA_HOME}/jre/lib/svm/builder/svm.jar -DgroupId=com.oracle.svm -DartifactId=svm -Dversion=GraalVM-1.0.0-rc1 -Dpackaging=jar
+$ mvn install:install-file -Dfile=${JAVA_HOME}/jre/lib/svm/builder/svm.jar -DgroupId=com.oracle.substratevm -DartifactId=svm -Dversion=GraalVM-1.0.0-rc1 -Dpackaging=jar
 ```
 The other required library, `graal-sdk.jar`, is automatically added to the classpath when you run the `javac` command shipped with GraalVM.
 
@@ -59,7 +59,7 @@ Open your web browser and navigate to http://127.0.0.1:8080/
 
 To build the native image we use the native-image tool:
 ```
-$ native-image -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationFiles=resources/netty_reflection_config.json -H:Name=netty-svm-http-server
+$ native-image -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationResources=netty_reflection_config.json -H:Name=netty-svm-http-server
 Build on Server(pid: 29456, port: 26681)
    classlist:     194.15 ms
        (cap):     468.11 ms
