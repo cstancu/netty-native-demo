@@ -16,7 +16,7 @@
     <dependency>
       <groupId>com.oracle.substratevm</groupId>
       <artifactId>svm</artifactId>
-      <version>GraalVM-1.0.0-rc1</version>
+      <version>GraalVM-1.0.0-rc6</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
