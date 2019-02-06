@@ -4,9 +4,9 @@ The purpose of this repo is to walk you through generating a native executable i
 
 ### Setting up the development environment
 
-To set up your development environment you first need to [download GraalVM](http://www.graalvm.org/downloads/). Either the Comunity Edition or the Enterprise Edition will work for the purpose of this example. The GraalVM download contains a full JVM plus few other utilities like the `native-tool`. Then you need to set your `JAVA_HOME` to point to GraalVM:
+To set up your development environment you first need to [download GraalVM](http://www.graalvm.org/downloads/). Either the Comunity Edition or the Enterprise Edition will work for the purpose of this example. The GraalVM download contains a full JVM plus few other utilities like the `native-image` tool. Then you need to set your `JAVA_HOME` to point to GraalVM:
 ```
-$ export JAVA_HOME=<graalvm-download-location>/graalvm-1.0.0-rc6
+$ export JAVA_HOME=<graalvm-download-location>/graalvm-1.0.0-rc12
 ```
 
 Then you need to add GraalVM to your path:
@@ -35,10 +35,16 @@ $ sudo apt-get install zlib1g-dev
 
 For the purpose of this demo we copied the `HttpHelloWorldServer` example from the [netty examples repo](https://github.com/netty/netty/tree/4.1/example/src/main/java/io/netty/example/http/helloworld).
 
-The example is built with Maven. But before we build we need to install `svm.jar` in the local Maven repository since the projects `pom.xml` file depends on it. The `svm.jar` library contains all the code needed to compile the substitutions required for Netty.
+The example is built with Maven. The `pom.xml` file declares an `svm.jar` dependency:
 ```
-$ mvn install:install-file -Dfile=${JAVA_HOME}/jre/lib/svm/builder/svm.jar -DgroupId=com.oracle.substratevm -DartifactId=svm -Dversion=GraalVM-1.0.0-rc6 -Dpackaging=jar
+<dependency>
+  <groupId>com.oracle.substratevm</groupId>
+  <artifactId>svm</artifactId>
+  <version>1.0.0-rc12</version>
+  <scope>provided</scope>
+</dependency>
 ```
+The `svm.jar` library contains all the code needed to compile the substitutions required for Netty.
 The other required library, `graal-sdk.jar`, is automatically added to the classpath when you run the `javac` command shipped with GraalVM.
 
 Now you can build with:
@@ -59,7 +65,7 @@ Open your web browser and navigate to http://127.0.0.1:8080/
 
 To build the native image we use the native-image tool:
 ```
-$ native-image -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationResources=netty_reflection_config.json -H:Name=netty-svm-http-server --delay-class-initialization-to-runtime=io.netty.handler.codec.http.HttpObjectEncoder
+$ native-image -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationResources=netty_reflection_config.json -H:Name=netty-svm-http-server --delay-class-initialization-to-runtime=io.netty.handler.codec.http.HttpObjectEncoder -Dio.netty.noUnsafe=true
 Build on Server(pid: 29456, port: 26681)
    classlist:     194.15 ms
        (cap):     468.11 ms
