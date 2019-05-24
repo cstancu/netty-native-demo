@@ -6,14 +6,14 @@ The purpose of this repo is to walk you through generating a native executable i
 
 To set up your development environment you first need to [download GraalVM](http://www.graalvm.org/downloads/). Either the Comunity Edition or the Enterprise Edition will work for the purpose of this example. The GraalVM download contains a full JVM plus few other utilities like the `native-image` tool. Then you need to set your `JAVA_HOME` to point to GraalVM:
 ```
-$ export JAVA_HOME=<graalvm-download-location>/graalvm-1.0.0-rc12
+$ export JAVA_HOME=<graalvm-download-location>/graalvm-19.0.0
 ```
 
 Then you need to add GraalVM to your path:
 ```
 $ export PATH=$JAVA_HOME/bin:$PATH
 ```
- 
+
 Now you can run the `native-image` tool:
 ```
 $ native-image --help
@@ -40,7 +40,7 @@ The example is built with Maven. The `pom.xml` file declares an `svm.jar` depend
 <dependency>
   <groupId>com.oracle.substratevm</groupId>
   <artifactId>svm</artifactId>
-  <version>1.0.0-rc12</version>
+  <version>19.0.0</version>
   <scope>provided</scope>
 </dependency>
 ```
@@ -65,7 +65,7 @@ Open your web browser and navigate to http://127.0.0.1:8080/
 
 To build the native image we use the native-image tool:
 ```
-$ native-image -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationResources=netty_reflection_config.json -H:Name=netty-svm-http-server --delay-class-initialization-to-runtime=io.netty.handler.codec.http.HttpObjectEncoder -Dio.netty.noUnsafe=true
+$ native-image --no-fallback --allow-incomplete-classpath -jar target/netty-svm-httpserver-full.jar -H:ReflectionConfigurationResources=netty_reflection_config.json -H:Name=netty-svm-http-server --initialize-at-build-time=io.netty,netty.svm --initialize-at-run-time=io.netty.handler.codec.http.HttpObjectEncoder,io.netty.handler.codec.http2.Http2CodecUtil,io.netty.handler.codec.http2.DefaultHttp2FrameWriter,io.netty.handler.codec.http.websocketx.WebSocket00FrameEncoder -Dio.netty.noUnsafe=true
 Build on Server(pid: 29456, port: 26681)
    classlist:     194.15 ms
        (cap):     468.11 ms
