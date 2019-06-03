@@ -9,9 +9,13 @@ To set up your development environment you first need to [download GraalVM](http
 $ export JAVA_HOME=<graalvm-download-location>/graalvm-19.0.0
 ```
 
-Then you need to add GraalVM to your path:
+Then you need to add GraalVM to your path
 ```
 $ export PATH=$JAVA_HOME/bin:$PATH
+```
+and install `native-image` with
+```
+gu install native-image
 ```
 
 Now you can run the `native-image` tool:
