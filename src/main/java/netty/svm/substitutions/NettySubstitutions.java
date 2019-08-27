@@ -16,11 +16,11 @@ final class Target_io_netty_buffer_AbstractReferenceCountedByteBuf {
     private static long REFCNT_FIELD_OFFSET;
 }
 
-@TargetClass(className = "io.netty.buffer.AbstractReferenceCounted", onlyWith = PlatformHasClass.class)
-final class Target_io_netty_buffer_AbstractReferenceCounted {
+@TargetClass(className = "io.netty.util.AbstractReferenceCounted", onlyWith = PlatformHasClass.class)
+final class Target_io_netty_util_AbstractReferenceCounted {
     @Alias
     @RecomputeFieldValue(kind = Kind.FieldOffset, //
-            declClassName = "io.netty.buffer.AbstractReferenceCounted", //
+            declClassName = "io.netty.util.AbstractReferenceCounted", //
             name = "refCnt") //
     private static long REFCNT_FIELD_OFFSET;
 }
